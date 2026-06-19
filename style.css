@@ -6,32 +6,31 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
 }
 
+/* Tady odstraňujeme vycentrování na modré pozadí */
 body { 
-    background-color: #0ea5e9; /* Modré pozadí aplikace */
-    display: flex; 
-    justify-content: center; 
-    min-height: 100vh; 
-    margin: 0; 
+    background-color: #f8fafc; /* Pozadí aplikace je nyní bílé/světlé */
+    margin: 0;
+    min-height: 100vh;
 }
 
-/* HLAVNÍ KONTEJNER - ŠÍŘKA PRO MOBIL */
+/* HLAVNÍ KONTEJNER - ROZTAŽENÝ NA CELÝ DISPLEJ */
 .app-container {
     background-color: #f8fafc;
-    width: 100%; 
-    max-width: 420px; 
-    height: 100vh; 
+    width: 100%;       /* Roztáhne se na šířku */
+    max-width: 100%;   /* Žádný limit, využije celý prostor */
+    height: 100vh;     /* Využije celou výšku */
     overflow-y: auto; 
     position: relative; 
     padding: 20px; 
-    padding-bottom: 100px; /* Aby obsah nebyl schovaný pod navigací */
+    padding-bottom: 100px; 
 }
 
-/* NAVIGACE PŘILEPENÁ DOLE */
+/* NAVIGACE PŘILEPENÁ DOLE - ROZTAŽENÁ */
 .bottom-nav {
     position: fixed; 
     bottom: 0; 
-    width: 100%; 
-    max-width: 420px; 
+    left: 0;
+    width: 100%;       /* Šířka 100% */
     background: white; 
     display: flex; 
     justify-content: space-around; 
@@ -40,18 +39,10 @@ body {
     z-index: 1000;
 }
 
-.nav-btn { 
-    background: none; 
-    border: none; 
-    font-size: 12px; 
-    font-weight: 600; 
-    cursor: pointer; 
-    color: #64748b; 
-}
-
+/* Zbytek prvků zůstává stejný, ale už nebudou "v omezeném rámečku" */
+.nav-btn { background: none; border: none; font-size: 12px; font-weight: 600; color: #64748b; }
 .nav-btn.active { color: #0284c7; }
 
-/* SEKCE A KARTY */
 .page-section { display: none; }
 .page-section.active { display: block; }
 
@@ -61,30 +52,14 @@ body {
     border-radius: 20px; 
     margin-bottom: 15px; 
     border: 1px solid #e2e8f0; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* FORMULÁŘE */
 input, select { 
-    width: 100%; 
-    padding: 12px; 
-    margin: 5px 0 15px 0; 
-    border: 1px solid #cbd5e1; 
-    border-radius: 12px; 
-    font-size: 16px; 
+    width: 100%; padding: 14px; margin: 5px 0 15px 0;
+    border: 1px solid #cbd5e1; border-radius: 12px; font-size: 16px; 
 }
 
 .primary-btn { 
-    width: 100%; 
-    padding: 15px; 
-    background: #0284c7; 
-    color: white; 
-    border: none; 
-    border-radius: 12px; 
-    font-weight: bold; 
-    cursor: pointer; 
+    width: 100%; padding: 16px; background: #0284c7; color: white;
+    border: none; border-radius: 12px; font-weight: bold; 
 }
-
-/* DROBNOSTI */
-h1 { font-size: 24px; margin-bottom: 15px; }
-h2 { font-size: 18px; margin-bottom: 10px; }

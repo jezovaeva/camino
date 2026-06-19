@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moje Camino 🥾</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- SEKCE 1: Úvodní nastavení -->
+        <section id="sekce-uvod" class="page-section active">
+            <div class="setup-header">
+                <h1>Nastavení cesty</h1>
+                <p>Zadejte základní údaje a lety</p>
+            </div>
+            
+            <div class="card">
+                <label>Název cesty</label>
+                <input type="text" id="trip-name" placeholder="Např. Camino de Santiago">
+                
+                <div class="form-row">
+                    <div class="form-group"><label>Datum od</label><input type="date" id="trip-start"></div>
+                    <div class="form-group"><label>Datum do</label><input type="date" id="trip-end"></div>
+                </div>
+
+                <div class="form-row" style="margin-bottom: 5px;">
+                    <div class="form-group"><label>Rozpočet (Kč)</label><input type="number" id="trip-budget" placeholder="Celkem"></div>
+                    <div class="form-group"><label>Dny (Pro útratu)</label><input type="number" id="trip-budget-days" placeholder="Auto"></div>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px; line-height: 1.4;">
+                    * Pokud letíte poslední den ráno, můžete si dny pro rozpočet o 1 snížit.
+                </p>
+
+                <div class="form-row">
+                    <div class="form-group"><label>Můj kurz Eura (1 € = Kč)</label><input type="number" id="trip-exchange-rate" value="25.0" step="0.1"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Informace o letech</h2>
+                <div class="flight-subgroup">
+                    <label class="sub-label">🛫 Odlet tam (1. den)</label>
+                    <div class="form-row">
+                        <div class="form-group"><label>Číslo letu</label><input type="text" id="flight-there-no" placeholder="FR 123"></div>
+                        <div class="form-group"><label>Trasa</label><input type="text" id="flight-there-route" placeholder="PRG -> BCN"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Čas odletu</label><input type="time" id="flight-there-time"></div>
+                        <div class="form-group"><label>Čas příletu</label><input type="time" id="flight-there-arrival"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Kód PNR</label><input type="text" id="flight-there-pnr" placeholder="X8B9Q"></div>
+                        <div class="form-group"><label>Odkaz na letenku</label><input type="text" id="flight-there-ticket" placeholder="https://..."></div>
+                    </div>
+                </div>
+
+                <div class="flight-subgroup" style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <label class="sub-label">🛬 Let zpět (Poslední den)</label>
+                    <div class="form-row">
+                        <div class="form-group"><label>Číslo letu</label><input type="text" id="flight-back-no" placeholder="FR 456"></div>
+                        <div class="form-group"><label>Trasa</label><input type="text" id="flight-back-route" placeholder="BCN -> PRG"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Čas odletu</label><input type="time" id="flight-back-time"></div>
+                        <div class="form-group"><label>Čas příletu</label><input type="time" id="flight-back-arrival"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Kód PNR</label><input type="text" id="flight-back-pnr" placeholder="M4T8P"></div>
+                        <div class="form-group"><label>Odkaz na letenku</label><input type="text" id="flight-back-ticket" placeholder="https://..."></div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="save-trip-btn" class="primary-btn">💾 Uložit nastavení cesty</button>
+            <button id="reset-app-btn" class="primary-btn" style="background-color: #fee2e2; color: #dc2626; margin-top: 15px;">🗑️ Smazat data a začít znovu</button>
+        </section>
+
+        <!-- SEKCE 2: Přehled a Finance -->
+        <section id="sekce-finance" class="page-section">
+            <div class="page-header"><h1 id="display-trip-name">Přehled cesty</h1></div>
+            
+            <div class="stats-grid">
+                <div class="stat-card"><label>Celkem km</label><p id="celkem-km" class="stat-amount">0 km</p></div>
+                <div class="stat-card"><label>Ubytování</label><p id="zbyva-ubytovani" class="stat-amount" style="color: var(--text-muted);">0 Kč</p></div>
+                <div class="stat-card"><label>K útratě (Zbývá)</label><p id="zbyva-celkem" class="stat-amount">0 Kč</p></div>
+                <div class="stat-card"><label>Denní limit</label><p id="zbyva-na-den" class="stat-amount accent-color">0 Kč</p></div>
+                <div class="stat-card full-width" style="text-align: center; padding: 12px;"><label>Moje Bilance (Ušetřeno)</label><p id="bilance-text" class="stat-amount" style="font-size: 20px; margin-top: 4px;">0 Kč</p></div>
+            </div>
+
+            <div class="card" id="graph-card" style="display: none; text-align: center;">
+                <h2>Struktura výdajů</h2>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 24px; margin: 15px 0;">
+                    <div id="pie-chart" style="width: 120px; height: 120px; border-radius: 50%; background: #e2e8f0; flex-shrink: 0;"></div>
+                    <div style="text-align: left; display: flex; flex-direction: column; gap: 6px; font-size: 14px;">
+                        <div><span style="display:inline-block; width:12px; height:12px; background:#0284c7; border-radius:3px; margin-right:6px;"></span>Ubytování: <strong id="pct-ubytovani">0%</strong></div>
+                        <div><span style="display:inline-block; width:12px; height:12px; background:#f59e0b; border-radius:3px; margin-right:6px;"></span>Jídlo a pití: <strong id="pct-jidlo">0%</strong></div>
+                        <div><span style="display:inline-block; width:12px; height:12px; background:#10b981; border-radius:3px; margin-right:6px;"></span>Doprava: <strong id="pct-doprava">0%</strong></div>
+                        <div><span style="display:inline-block; width:12px; height:12px; background:#6366f1; border-radius:3px; margin-right:6px;"></span>Ostatní: <strong id="pct-ostatni">0%</strong></div>
+                    </div>
+                </div>
+                <p id="prumer-vydaj-text" style="font-size: 13px; color: var(--text-muted); border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 10px; font-weight: 600;"></p>
+            </div>
+
+            <div class="card">
+                <h2>Zapsat nový výdaj</h2>
+                <input type="text" id="expense-name" placeholder="Za co to bylo?">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;"><input type="number" id="expense-amount" placeholder="Částka" style="margin-bottom: 0;"></div>
+                    <div class="form-group" style="flex: 1;">
+                        <select id="expense-currency" style="margin-bottom: 0;">
+                            <option value="EUR">€ (Euro)</option>
+                            <option value="CZK">Kč (Koruna)</option>
+                        </select>
+                    </div>
+                </div>
+                <label style="margin-top: 15px;">Kategorie</label>
+                <select id="expense-category">
+                    <option value="Ubytování">Ubytování</option>
+                    <option value="Jídlo a pití">Jídlo a pití</option>
+                    <option value="Doprava">Doprava</option>
+                    <option value="Ostatní">Ostatní</option>
+                </select>
+                <button id="add-expense-btn" class="primary-btn" style="margin-top: 10px;">➕ Přidat výdaj</button>
+            </div>
+
+            <h2>Historie výdajů</h2>
+            <ul id="expense-list" class="modern-list"></ul>
+            <button id="export-pdf-btn" class="primary-btn" style="margin-top: 25px; background-color: var(--text-muted);">📄 Stáhnout deník cesty (PDF)</button>
+        </section>
+
+        <!-- SEKCE 3: Itinerář -->
+        <section id="sekce-itinerar" class="page-section">
+            <div class="page-header"><h1>Itinerář</h1></div>
+            <div id="day-tabs" class="day-tabs-container"></div>
+            <div id="itinerary-list"></div>
+        </section>
+
+        <!-- SEKCE 4: Seznamy -->
+        <section id="sekce-seznamy" class="page-section">
+            <div class="page-header"><h1>Seznamy úkolů</h1></div>
+            <div class="card">
+                <label>Vytvořit nový seznam</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="new-list-name" placeholder="Např. Co sbalit" style="margin-bottom: 0;">
+                    <button id="add-list-btn" class="action-btn-square">+</button>
+                </div>
+            </div>
+            <div id="lists-container"></div>
+        </section>
+
+        <!-- SEKCE 5: Odkazy a dokumenty -->
+        <section id="sekce-odkazy" class="page-section">
+            <div class="page-header"><h1>Dokumenty 🔗</h1></div>
+            <div class="card">
+                <label>Přidat důležitý odkaz</label>
+                <input type="text" id="link-name" placeholder="Název (např. Pojištění)">
+                <input type="url" id="link-url" placeholder="Vlož odkaz (https://...)">
+                <button id="add-link-btn" class="primary-btn" style="margin-top: 10px;">Uložit odkaz</button>
+            </div>
+            <ul id="links-list" class="modern-list"></ul>
+        </section>
+    </div>
+
+    <!-- SPODNÍ NAVIGACE -->
+    <nav id="main-nav" class="bottom-nav hidden">
+        <button class="nav-btn" data-target="sekce-uvod">⚙️ Úvod</button>
+        <button class="nav-btn" data-target="sekce-finance">📊 Přehled</button>
+        <button class="nav-btn" data-target="sekce-itinerar">📅 Dny</button>
+        <button class="nav-btn" data-target="sekce-seznamy">✅ Seznamy</button>
+        <button class="nav-btn" data-target="sekce-odkazy">🔗 Odkazy</button>
+    </nav>
+    <script src="script.js"></script>
+</body>
+</html>

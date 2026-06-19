@@ -1,53 +1,35 @@
-:root {
-    --bg-main: #f1f5f9;
-    --text-main: #1e293b;
-    --accent: #0ea5e9; /* Jasnější modrá */
-    --accent-light: #e0f2fe;
-    --card-bg: #ffffff;
-    --camino-sand: #fef3c7; /* Jemná písková pro Camino nádech */
-    --radius: 24px;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+/* Základní reset */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
 
 body {
-    background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%); /* Modrý gradient jako obloha */
-    display: flex; justify-content: center; align-items: center; min-height: 100vh;
+    background: #f1f5f9;
+    display: flex; justify-content: center; min-height: 100vh;
 }
 
 .app-container {
-    background-color: var(--bg-main); width: 100%; max-width: 400px; height: 90vh;
-    border-radius: 40px; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.3);
-    overflow-y: auto; padding: 24px; color: var(--text-main);
-    border: 6px solid rgba(255,255,255,0.8);
+    width: 100%; max-width: 420px; background: white;
+    padding: 24px; min-height: 100vh;
 }
 
-/* Zvýraznění karet */
+/* Karty */
 .card { 
-    background: var(--card-bg); 
-    border-radius: 20px; 
-    padding: 20px; 
-    margin-bottom: 20px; 
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-    border-left: 6px solid var(--accent); /* Barevný akcent na boku */
+    background: #ffffff; border-radius: 20px; padding: 20px; 
+    margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
 }
 
+/* Formuláře */
 input, select { 
-    width: 100%; padding: 15px; margin-bottom: 12px; 
-    border: 2px solid #e2e8f0; border-radius: 16px; 
-    background: #f8fafc; font-size: 16px;
+    width: 100%; padding: 12px; margin-bottom: 12px;
+    border: 1px solid #cbd5e1; border-radius: 12px; font-size: 16px;
 }
-
-input:focus { border-color: var(--accent); outline: none; background: #fff; }
 
 .primary-btn { 
-    background: var(--accent); color: white; border: none; padding: 18px; 
-    border-radius: 16px; font-weight: 800; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(14,165,233,0.3);
+    width: 100%; padding: 15px; background: #0284c7; color: white;
+    border: none; border-radius: 12px; font-weight: bold; cursor: pointer;
 }
 
-h1 { color: #0f172a; margin-bottom: 20px; }
-h2 { color: #334155; border-bottom: 2px solid var(--accent-light); padding-bottom: 5px; }
-
-/* Drobnost pro doladění vzhledu */
-.setup-header { background: var(--camino-sand); padding: 20px; border-radius: 20px; margin-bottom: 20px; }
+/* Navigace a sekce */
+.page-section { display: none; }
+.page-section.active { display: block; }
+.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: white; padding: 15px; border-top: 1px solid #e2e8f0; }
